@@ -1,1 +1,2 @@
 # LAB3_TRABHASH
+questão 1
