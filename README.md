@@ -1,2 +1,3 @@
 # LAB3_TRABHASH
-questão 1
+questï¿½o 1
+Alguma coisa!
