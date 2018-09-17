@@ -1,89 +1,73 @@
 package hash;
+import java.util.Scanner;
+
 import arvore.ArvoreB;
 
 public class HashArvoreB {
+    private static int TAMANHO = 3;
+    private Celula[] tabela = new Celula[TAMANHO];
+    
+    public void insere(String chave, String valor) {
+        int hash = getHash(chave);
+        final Celula entrada = new Celula(chave, valor);
+        
+        if(tabela[hash] == null) {
+            tabela[hash] = entrada;
+        }
+        
+        else {
+            Celula temp = tabela[hash];
+            if (temp.arvore.vazia()) {
+            	temp.arvore.insere(chave, valor);
+            }
+            else
+            	temp.arvore.insere(chave, valor);
+        }
+    }
 
-	private int M; // tamanho da tabela
-	private Celula[] tabela;// tabela propriamente
-	
-	private class Celula{
+    public String get(String chave) {
+        int hash = getHash(chave);
+        if(tabela[hash] != null) {
+            Celula temp = tabela[hash];
+            
+            if (temp.chave == chave) return temp.valor;
+            else if (!temp.arvore.vazia()) return temp.arvore.get(chave).toString();
+        }
 
-		private Integer chave;
-		private boolean vazio;
-		private ArvoreB arvore;
-		
-		Celula(){
-			this.chave = null;
-			this.vazio = true;
-			this.arvore = null;
-		}
-		
-		public Integer getChave() {
-			return chave;
-		}
-		public void setChave(Integer chave) {
-			this.chave = chave;
-		}
-		public boolean isVazio() {
-			return vazio;
-		}
-		public void setVazio(boolean vazio) {
-			this.vazio = vazio;
-		}
-		
-	}
+        return null;
+    }
 
-	public HashArvoreB(int M) {
-		if(M < 3) M = 3;
-		this.M = M;
-		tabela = new Celula[M];
-		for (int x = 0; x < tabela.length; x++)
-			tabela[x] = new Celula();
-	}
-	
-	public int h(int x) {
-		return x % M;
-	}
+    private int getHash(String key) {
+        return key.hashCode() % TAMANHO;
+    }
 
-	public void insere(int chave) throws Exception {
+    public static class Celula {
+        String chave;
+        String valor;
+        ArvoreB arvore;
 
-		int pos = h(chave) , j = 0;
-		
-		while ( !(tabela[h(chave + j)].isVazio()) && j++ <= M-1);
-		
-		if( j > M-1) {
-			tabela[h(chave + j)].arvore = new ArvoreB();
-			tabela[h(chave + j)].arvore.insere(chave, chave);
-		}
-		else { 
-			tabela[h(chave + j)].setChave(chave);
-			tabela[h(chave+j)].setVazio(false);
-		}
+        public Celula(String chave, String valor) {
+            this.chave = chave;
+            this.valor = valor;
+            this.arvore = new ArvoreB();
+        }
+    }
 
-	}
-	
-	public void remove(int chave) {
-		int pos = h(chave), j = 0;
-		while( (tabela[h(chave+j)].isVazio()  ||  tabela[h(chave+j)].getChave() != chave) && j++ <= M-1);
-		
-		if( j > M-1 ) {
-			if (tabela[h(chave + j)].arvore.get(chave) != null) {
-				/** Quando o valor passado para o metodo insere é @code { null }, a chave é removida */
-				tabela[h(chave + j)].arvore.insere(chave, null);
-			}
-		}
-		else {
-			tabela[h(chave + j)].setChave(null);
-			tabela[h(chave+j)].setVazio(true);
-		}
-	}
-
-
-	public void imprime() {
-		for (int x = 0; x < tabela.length; x++) {
-			System.out.println(tabela[x].getChave());
-		}
-		System.out.println();
-	}
-
+    public static void main(String[] args) {
+        Scanner input = new Scanner (System.in);
+    	HashArvoreB hashArvoreB = new HashArvoreB();
+       
+        for(int i=0; i<30; i++) {
+            final String chave = String.valueOf(i);
+            final String valor = String.valueOf(i * 2);
+            hashArvoreB.insere(chave, valor);
+        }
+        
+        System.out.println("** Para cada chave 'k', o valor 'v' sera = (k * 2) **");
+        System.out.println();
+        System.out.println("Digite uma chave (0 < k < 30): ");
+        
+        String chave = input.next();
+        System.out.println("\nValor para a chave(" + chave + ") : " + hashArvoreB.get(chave) );
+    }
 }
