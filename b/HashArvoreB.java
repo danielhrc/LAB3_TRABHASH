@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 import arvore.ArvoreB;
 
-public class HashArvoreB {
+public class HashArvoreB implements Inserivel {
     private static int TAMANHO = 3;
     private Celula[] tabela = new Celula[TAMANHO];
     
