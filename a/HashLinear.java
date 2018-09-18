@@ -1,11 +1,11 @@
 package Trabalho1.a;
 
-public class HashLinear {
+public class HashLinear implements Inserivel{
 	/*
-* a)  Crie  duas  implementaÁıes  de  Tabela  Hash,  sendo  uma  Linear,
-* com tratamento  de  Colisıes  na  PrÛpria  Estrutura,  
- * com  tamanho  total  de  elementosa  ser  setada  dinamicamente  no  inÌcio  da  execuÁ„o,
- * podendo  ter  no  mÌnimo tamanho  3  e  m·ximo  a  capacidade  m·ximo  da  memÛria  interna
+* a)  Crie  duas  implementa√ß√µes  de  Tabela  Hash,  sendo  uma  Linear,
+* com tratamento  de  Colis√µes  na  Pr√≥pria  Estrutura,  
+ * com  tamanho  total  de  elementosa  ser  setada  dinamicamente  no  in√≠cio  da  execu√ß√£o,
+ * podendo  ter  no  m√≠nimo tamanho  3  e  m√°ximo  a  capacidade  m√°ximo  da  mem√≥ria  interna
 	 */
 
 	private int M; // tamanho da tabela
@@ -54,7 +54,7 @@ public class HashLinear {
 		
 		while ( !(tabela[h(chave + j)].isVazio()) && j++ <= M-1);
 		
-		if( j > M-1) System.out.println("N„o foi possÌvel inserir o elemento "+chave+" na tabela pois a mesma est· cheia");
+		if( j > M-1) System.out.println("N√£o foi poss√≠vel inserir o elemento "+chave+" na tabela pois a mesma est√° cheia");
 		else { 
 			tabela[h(chave + j)].setChave(chave);
 			tabela[h(chave+j)].setVazio(false);
@@ -66,7 +66,7 @@ public class HashLinear {
 		int pos = h(chave), j = 0;
 		while( (tabela[h(chave+j)].isVazio()  ||  tabela[h(chave+j)].getChave() != chave) && j++ <= M-1);
 		
-		if( j > M-1 ) System.out.println("N„o foi possÌvel encontrar a chave "+chave+" na tabela para remove-la");
+		if( j > M-1 ) System.out.println("N√£o foi poss√≠vel encontrar a chave "+chave+" na tabela para remove-la");
 		else {
 			tabela[h(chave + j)].setChave(null);
 			tabela[h(chave+j)].setVazio(true);
