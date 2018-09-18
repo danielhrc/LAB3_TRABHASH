@@ -15,14 +15,14 @@ public class Teste {
         File arquivo = new File(nomeArquivo);
         try {
             BufferedReader leitor = new BufferedReader(new FileReader(arquivo));
-            Inputavel dados[] = new Inputavel[3];
+            Inserivel dados[] = new Inserivel[3];
            //dados[0] = new HashLinear();
             //dados[1] = new HashArvoreB();
             //dados[2] = new HashArvoreBMais();
             String linha;
             while((linha = leitor.readLine()) != null ){
                 Integer i = Integer.parseInt(linha);
-                for (Inputavel hash : dados) {
+                for (Inserivel hash : dados) {
                     hash.insere(i);
                 }
             }
