@@ -2,24 +2,24 @@ package arvore;
 public class ArvoreB<Chave extends Comparable<Chave>, Valor>  {
     private static final int M = 4;
 
-    private Nodo raiz;       
+    private Pagina raiz;       
     private int altura;      
     private int n;           
 
-    private static final class Nodo {
+    private static final class Pagina {
         private int m;              
-        private Pagina[] filhos = new Pagina[M]; 
+        private Nodo[] filhos = new Nodo[M]; 
 
-        private Nodo(int k) {
+        private Pagina(int k) {
             m = k;
         }
     }
 
-    private static class Pagina {
+    private static class Nodo {
         private Comparable chave;
         private final Object valor;
-        private Nodo prox;   
-        public Pagina(Comparable chave, Object valor, Nodo prox) {
+        private Pagina prox;   
+        public Nodo(Comparable chave, Object valor, Pagina prox) {
             this.chave  = chave;
             this.valor  = valor;
             this.prox = prox;
@@ -27,7 +27,7 @@ public class ArvoreB<Chave extends Comparable<Chave>, Valor>  {
     }
 
     public ArvoreB() {
-        raiz = new Nodo(0);
+        raiz = new Pagina(0);
     }
  
     public boolean vazia() {
@@ -47,8 +47,8 @@ public class ArvoreB<Chave extends Comparable<Chave>, Valor>  {
         return pesquisa(raiz, chave, altura);
     }
 
-    private Valor pesquisa(Nodo x, Chave chave, int altura) {
-        Pagina[] filhos = x.filhos;
+    private Valor pesquisa(Pagina x, Chave chave, int altura) {
+        Nodo[] filhos = x.filhos;
 
         if (altura == 0) {
             for (int j = 0; j < x.m; j++) {
@@ -66,21 +66,22 @@ public class ArvoreB<Chave extends Comparable<Chave>, Valor>  {
     }
 
     public void insere(Chave chave, Valor valor) {
-        if (chave == null) throw new IllegalArgumentException("O argumento nao pode ser null!");
-        Nodo u = insere(raiz, chave, valor, altura); 
+        if (chave == null) 
+        	throw new IllegalArgumentException("O argumento nao pode ser null!");
+        Pagina u = insere(raiz, chave, valor, altura); 
         n++;
         if (u == null) return;
 
-        Nodo t = new Nodo(2);
-        t.filhos[0] = new Pagina(raiz.filhos[0].chave, null, raiz);
-        t.filhos[1] = new Pagina(u.filhos[0].chave, null, u);
+        Pagina t = new Pagina(2);
+        t.filhos[0] = new Nodo(raiz.filhos[0].chave, null, raiz);
+        t.filhos[1] = new Nodo(u.filhos[0].chave, null, u);
         raiz = t;
         altura++;
     }
 
-    private Nodo insere(Nodo h, Chave chave, Valor valor, int altura) {
+    private Pagina insere(Pagina h, Chave chave, Valor valor, int altura) {
         int j;
-        Pagina t = new Pagina(chave, valor, null);
+        Nodo t = new Nodo(chave, valor, null);
 
         if (altura == 0) {
             for (j = 0; j < h.m; j++) {
@@ -91,7 +92,7 @@ public class ArvoreB<Chave extends Comparable<Chave>, Valor>  {
         else {
             for (j = 0; j < h.m; j++) {
                 if ((j+1 == h.m) || menor(chave, h.filhos[j+1].chave)) {
-                    Nodo u = insere(h.filhos[j++].prox, chave, valor, altura-1);
+                    Pagina u = insere(h.filhos[j++].prox, chave, valor, altura-1);
                     if (u == null) return null;
                     t.chave = u.filhos[0].chave;
                     t.prox = u;
@@ -112,8 +113,8 @@ public class ArvoreB<Chave extends Comparable<Chave>, Valor>  {
         	return split(h);
     }
 
-    private Nodo split(Nodo h) {
-        Nodo t = new Nodo(M/2);
+    private Pagina split(Pagina h) {
+        Pagina t = new Pagina(M/2);
         h.m = M/2;
         for (int j = 0; j < M/2; j++)
             t.filhos[j] = h.filhos[M/2+j]; 
@@ -126,20 +127,5 @@ public class ArvoreB<Chave extends Comparable<Chave>, Valor>  {
 
     private boolean igual(Comparable chave_1, Comparable chave_2) {
         return chave_1.compareTo(chave_2) == 0;
-    }
-
-    public static void main(String[] args) {
-        ArvoreB<String, String> arvore = new ArvoreB<String, String>();
-
-        arvore.insere("Lucas", "Rotsen");
-        arvore.insere("PUC", "Minas");
-
-        System.out.println("Lucas:  " + arvore.get("Lucas"));
-        System.out.println("PUC: " + arvore.get("PUC"));
-        System.out.println();
-
-        System.out.println("Tamanho da Arvore:    " + arvore.tamanho());
-        System.out.println("Altura da Arvore:  " + arvore.alturaArvore());
-        System.out.println();
     }
 }
